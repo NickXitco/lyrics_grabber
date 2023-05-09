@@ -13,7 +13,7 @@ tracks_result = genius.album_tracks(ALBUM_ID, per_page=None, page=None, text_for
 
 album_title = album_result['album']['full_title']
 
-output = open('output/' + album_title, 'w')
+output = open('output/' + album_title + '.txt', 'w')
 
 output.write(album_title + '\n')
 
@@ -30,7 +30,7 @@ def get_lyrics(url):
         lyrics = lyrics_div.text.strip()
         lyrics = unidecode(lyrics)
 
-        lyrics = re.sub(r'[\u0020\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000]+', ' ', lyrics)
+        lyrics = re.sub(r'[\u0020\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\u200b]+', ' ', lyrics)
         return lyrics
     else:
         return "[INSTRUMENTAL]"
@@ -41,6 +41,7 @@ i = 1
 for result in tracks_result['tracks']:
     song_url = result['song']['url']
     song_title = result['song']['title']
+    song_title = unidecode(re.sub(r'[\u0020\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\u200b]+', ' ', song_title))
     lyrics_fetched = get_lyrics(song_url)
     output.write('\n' + str(i) + ' - ' + song_title + ' - ' + lyrics_fetched + '\n')
     i += 1
