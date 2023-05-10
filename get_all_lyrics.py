@@ -7,11 +7,13 @@ import re
 
 token = 'ydLL5r8qv8kbL9QJDfs72DOCvaTDMB5D7v7OJRx8pz6Y_qOA9Uew8N1stqP1Y36z'
 genius = Genius(token)
-ALBUM_ID = 917339
+ALBUM_ID = 455019
 album_result = genius.album(ALBUM_ID)
 tracks_result = genius.album_tracks(ALBUM_ID, per_page=None, page=None, text_format=None)
 
 album_title = album_result['album']['full_title']
+
+album_title = unidecode(re.sub(r'[\u0020\u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\u200b]+', ' ', album_title))
 
 output = open('output/' + album_title + '.txt', 'w')
 
